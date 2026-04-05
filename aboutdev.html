@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>About</title>
+
+<style>
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  color:white;
+
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0,240,255,0.1), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(255,0,200,0.1), transparent 40%),
+    radial-gradient(circle at bottom, #050505, #000);
+
+  display:flex;
+  justify-content:center;
+  padding:40px 20px;
+}
+
+.container{
+  width:100%;
+  max-width:550px;
+  padding:25px;
+  border-radius:16px;
+  background:rgba(20,20,20,0.5);
+  backdrop-filter:blur(15px);
+  border:1px solid rgba(255,255,255,0.06);
+}
+
+h1{
+  color:#00f0ff;
+  margin-bottom:20px;
+  font-size:20px;
+}
+
+p{
+  font-size:14px;
+  color:#bbb;
+  line-height:1.6;
+  margin-bottom:12px;
+}
+
+button{
+  width:100%;
+  margin-top:25px;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(45deg,#00f0ff,#ff00c8);
+  color:white;
+  cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>About</h1>
+
+  <p>
+    This tool was made to allow simple crosshair customization for browser-based games (.io).
+  </p>
+
+  <p>
+    Built and maintained by RAPXTOR.
+  </p>
+
+<button onclick="goBack()">Back</button>
+
+</div>
+
+<script>
+function goBack(){
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>How to Use </title>
+
+<style>
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  color:white;
+
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0,240,255,0.15), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(255,0,200,0.15), transparent 40%),
+    radial-gradient(circle at bottom, #050505, #000);
+
+  display:flex;
+  justify-content:center;
+  padding:40px 20px;
+}
+
+.container{
+  width:100%;
+  max-width:650px;
+  padding:30px;
+  border-radius:20px;
+  background:rgba(20,20,20,0.6);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:
+    0 0 40px rgba(0,0,0,0.9),
+    0 0 25px rgba(0,240,255,0.1);
+}
+
+h1{
+  text-align:center;
+  color:#00f0ff;
+  text-shadow:0 0 15px #00f0ff;
+  margin-bottom:25px;
+}
+
+.step{
+  margin-bottom:20px;
+  padding:15px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.05);
+  transition:0.25s;
+}
+
+.step:hover{
+  transform:translateY(-3px);
+  box-shadow:0 0 15px rgba(0,240,255,0.2);
+}
+
+.step-title{
+  font-weight:bold;
+  color:#00f0ff;
+  margin-bottom:5px;
+}
+
+.step-desc{
+  font-size:14px;
+  color:#bbb;
+}
+
+.note{
+  margin-top:25px;
+  font-size:13px;
+  color:#888;
+  text-align:center;
+}
+
+button{
+  width:100%;
+  margin-top:30px;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(45deg,#00f0ff,#ff00c8);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+button:hover{
+  transform:scale(1.03);
+  box-shadow:0 0 20px #00f0ff;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>📘 How to Use</h1>
+
+  <div class="step">
+    <div class="step-title">Step 1 — Customize Your Crosshair</div>
+    <div class="step-desc">
+      Use the sliders on the main page to adjust size, shape, RGB speed, and glow.
+      You can preview changes in real-time before generating the script.
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title">Step 2 — Generate the Script</div>
+    <div class="step-desc">
+      Click the <b>Generate Script</b> button to create your custom crosshair code.
+      This code is tailored based on your selected settings.
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title">Step 3 — Copy the Code</div>
+    <div class="step-desc">
+      Click <b>Copy Code</b> to instantly copy the generated script to your clipboard.
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title">Step 4 — Open Tampermonkey</div>
+    <div class="step-desc">
+      Launch the Tampermonkey extension in your browser.  
+      This tool allows you to run custom scripts on websites.
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title">Step 5 — Create New Script</div>
+    <div class="step-desc">
+      Click <b>Create a new script</b> inside Tampermonkey and remove any default code.
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title">Step 6 — Paste & Save</div>
+    <div class="step-desc">
+      Paste your copied code and press <b>Ctrl + S</b> to save the script.
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title">Step 7 — Open Your Game</div>
+    <div class="step-desc">
+      Visit a supported browser game (like surviv.io or similar).
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-title">Step 8 — Reload the Page</div>
+    <div class="step-desc">
+      Refresh the page if needed — your custom RGB crosshair will now appear in-game.
+    </div>
+  </div>
+
+  <div class="note">
+    ⚡ Tip: Make sure Tampermonkey has "Run Userscripts" perms.
+  </div>
+
+<button onclick="goBack()">⬅ Back to Generator</button>
+
+</div>
+
+<script>
+function goBack(){
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

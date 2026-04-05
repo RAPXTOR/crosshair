@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Crosshair Labs</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0,240,255,0.15), transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(255,0,200,0.15), transparent 40%),
+        radial-gradient(circle at bottom, #050505, #000);
+
+      display: flex;
+      justify-content: center;
+      padding: 40px 0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 420px;
+      padding: 25px;
+      border-radius: 20px;
+      background: rgba(20,20,20,0.6);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow:
+        0 0 30px rgba(0,0,0,0.9),
+        0 0 20px rgba(0,240,255,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #00f0ff;
+      text-shadow: 0 0 10px #00f0ff;
+    }
+
+    .preview {
+      height: 160px;
+      background: radial-gradient(circle, #111, #000);
+      border-radius: 12px;
+      position: relative;
+      margin-bottom: 20px;
+      cursor: none;
+      border: 1px solid #222;
+    }
+
+    svg {
+      width: 70px;
+      height: 70px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    label {
+      display: block;
+      margin-top: 18px;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 18px;
+      background: transparent;
+      margin-top: 6px;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 6px;
+      border-radius: 5px;
+      background: linear-gradient(90deg, #00f0ff, #ff00c8);
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #00f0ff;
+      box-shadow: 0 0 12px #00f0ff;
+      cursor: pointer;
+      margin-top: -4px; 
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      margin-top: 15px;
+      border-radius: 10px;
+      border: none;
+      padding: 10px;
+      background: #050505;
+      color: #00ff88;
+      font-family: monospace;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(45deg, #00f0ff, #ff00c8);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 20px #00f0ff;
+    }
+
+   
+    .shortcuts {
+      position: fixed;
+      bottom: 15px;
+      left: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .shortcuts a {
+      text-decoration: none;
+      color: white;
+      font-size: 12px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(20,20,20,0.7);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      transition: 0.2s;
+    }
+
+    .shortcuts a:hover {
+      box-shadow: 0 0 10px #00f0ff;
+      transform: scale(1.05);
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1> Crosshair Labs </h1>
+
+  <div class="preview">
+    <svg id="previewSVG" viewBox="0 0 200 200">
+      <circle id="previewCircle" cx="100" cy="100" r="50" stroke-width="6"/>
+      <g id="previewLines" stroke-width="4" stroke-linecap="round"></g>
+    </svg>
+  </div>
+
+  <label>OVER-ALL SIZE</label>
+  <input type="range" id="size" min="30" max="100" value="60">
+
+  <label>CIRCLE SIZE</label>
+  <input type="range" id="circleSize" min="20" max="90" value="50">
+
+  <label>LINE LENGTH</label>
+  <input type="range" id="lineLength" min="20" max="120" value="70">
+
+  <label>LINE THICKNESS</label>
+  <input type="range" id="lineWidth" min="1" max="8" value="4">
+
+  <label>RGB SPEED</label>
+  <input type="range" id="speed" min="1" max="10" value="2">
+
+  <label>RGB GLOW</label>
+  <input type="range" id="glow" min="0" max="20" value="6">
+
+  <button onclick="generate()"> Generate Script</button>
+  <button onclick="copyCode()"> Copy Code</button>
+
+  <textarea id="output"></textarea>
+
+</div>
+
+<div class="shortcuts">
+  <a href="./howtouse.html" target="_blank">📘 How to Use</a>
+  <a href="./aboutdev.html" target="_blank">👨‍💻 About Dev</a>
+</div>
+
+<script>
+const previewLines = document.getElementById("previewLines");
+const previewCircle = document.getElementById("previewCircle");
+const previewSVG = document.getElementById("previewSVG");
+
+const sizeInput = document.getElementById("size");
+const circleSizeInput = document.getElementById("circleSize");
+const lineLengthInput = document.getElementById("lineLength");
+const lineWidthInput = document.getElementById("lineWidth");
+const speedInput = document.getElementById("speed");
+const glowInput = document.getElementById("glow");
+
+let hue = 0;
+
+function updateLines() {
+  const len = lineLengthInput.value;
+  const half = len / 2;
+
+  previewLines.innerHTML = `
+    <line x1="${100-half}" y1="95" x2="${100+half}" y2="95"/>
+    <line x1="${100-half}" y1="105" x2="${100+half}" y2="105"/>
+    <line x1="95" y1="${100-half}" x2="95" y2="${100+half}"/>
+    <line x1="105" y1="${100-half}" x2="105" y2="${100+half}"/>
+  `;
+}
+updateLines();
+
+lineLengthInput.oninput = updateLines;
+circleSizeInput.oninput = () => previewCircle.setAttribute("r", circleSizeInput.value);
+
+function animatePreview() {
+  hue = (hue + speedInput.value * 0.5) % 360;
+  const col = `hsl(${hue},100%,50%)`;
+  const fill = `hsla(${hue},100%,50%,0.6)`;
+
+  previewLines.setAttribute("stroke", col);
+  previewLines.style.filter = `drop-shadow(0 0 ${glowInput.value}px ${col})`;
+
+  previewCircle.setAttribute("stroke", col);
+  previewCircle.setAttribute("fill", fill);
+
+  requestAnimationFrame(animatePreview);
+}
+animatePreview();
+
+lineWidthInput.oninput = e => previewLines.setAttribute("stroke-width", e.target.value);
+
+sizeInput.oninput = e => {
+  previewSVG.style.width = e.target.value + "px";
+  previewSVG.style.height = e.target.value + "px";
+};
+
+function generate() {
+  const size = sizeInput.value;
+  const circleSize = circleSizeInput.value;
+  const lineWidth = lineWidthInput.value;
+  const speed = speedInput.value;
+  const glow = glowInput.value;
+  const len = lineLengthInput.value;
+
+  output.value = `// ==UserScript==
+// @name         RGB Crosshair by RAPXTOR
+// @namespace    http://tampermonkey.net/
+// @version      3.27
+// @description  Custom RGB crosshair for browser .io games
+// @author       RAPXTOR
+// @match        *://survev.io/*
+// @match        *://resurviv.biz/*
+// @match        *://blocktanks.net/*
+// @grant        none
+// ==/UserScript==
+
+(function(){
+
+
+const style=document.createElement("style");
+style.innerHTML="*{cursor:none!important}";
+document.head.appendChild(style);
+
+// settings
+const size=${size};
+const half=size/2;
+const halfLine=${len}/2;
+
+// position
+let x=window.innerWidth/2;
+let y=window.innerHeight/2;
+
+// container
+const c=document.createElement("div");
+document.body.appendChild(c);
+
+Object.assign(c.style,{
+position:"fixed",
+width:size+"px",
+height:size+"px",
+pointerEvents:"none",
+zIndex:"2147483647",
+top:"0px",
+left:"0px"
+});
+
+// SVG
+c.innerHTML=\`
+<svg viewBox="0 0 200 200" width="100%" height="100%">
+<circle cx="100" cy="100" r="${circleSize}" stroke-width="6"/>
+<g id="l" stroke-width="${lineWidth}" stroke-linecap="round">
+<line x1="\${100-halfLine}" y1="95" x2="\${100+halfLine}" y2="95"/>
+<line x1="\${100-halfLine}" y1="105" x2="\${100+halfLine}" y2="105"/>
+<line x1="95" y1="\${100-halfLine}" x2="95" y2="\${100+halfLine}"/>
+<line x1="105" y1="\${100-halfLine}" x2="105" y2="\${100+halfLine}"/>
+</g>
+</svg>\`;
+
+const l=c.querySelector("#l");
+const cir=c.querySelector("circle");
+
+// tracking
+document.addEventListener("pointermove",e=>{
+x=e.clientX;
+y=e.clientY;
+});
+
+// render loop
+function render(){
+c.style.transform=\`translate(\${x-half}px,\${y-half}px)\`;
+requestAnimationFrame(render);
+}
+render();
+
+// RGB animation
+let h=0;
+setInterval(()=>{
+h=(h+${speed})%360;
+
+const col=\`hsl(\${h},100%,50%)\`;
+const fill=\`hsla(\${h},100%,50%,0.6)\`;
+
+l.setAttribute("stroke",col);
+cir.setAttribute("stroke",col);
+cir.setAttribute("fill",fill);
+
+l.style.filter=\`drop-shadow(0 0 ${glow}px \${col})\`;
+
+},20);
+
+})();`;
+}
+
+function copyCode(){
+  output.select();
+  document.execCommand("copy");
+  alert("Copied!");
+}
+</script>
+
+</body>
+</html>
