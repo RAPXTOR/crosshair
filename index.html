@@ -263,6 +263,11 @@ function animatePreview() {
   requestAnimationFrame(animatePreview);
 }
 animatePreview();
+const previewSVG = document.getElementById("previewSVG");
+sizeInput.oninput = e => {
+  previewSVG.style.width = e.target.value + "px";
+  previewSVG.style.height = e.target.value + "px";
+};
 
 function generate() {
   const size = sizeInput.value;
