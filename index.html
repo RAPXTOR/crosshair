@@ -210,6 +210,8 @@
 <script>
 const previewLines = document.getElementById("previewLines");
 const previewCircle = document.getElementById("previewCircle");
+const previewSVG = document.getElementById("previewSVG");
+
 const sizeInput = document.getElementById("size");
 const circleSizeInput = document.getElementById("circleSize");
 const lineLengthInput = document.getElementById("lineLength");
@@ -221,6 +223,21 @@ const staticColorInput = document.getElementById("staticColor");
 
 let hue = 0;
 
+
+sizeInput.oninput = e => {
+  previewSVG.style.width = e.target.value + "px";
+  previewSVG.style.height = e.target.value + "px";
+};
+previewSVG.style.width = sizeInput.value + "px";
+previewSVG.style.height = sizeInput.value + "px";
+
+
+lineWidthInput.oninput = e => {
+  previewLines.setAttribute("stroke-width", e.target.value);
+};
+previewLines.setAttribute("stroke-width", lineWidthInput.value);
+
+// lines
 function updateLines() {
   const len = lineLengthInput.value;
   const half = len / 2;
@@ -233,10 +250,13 @@ function updateLines() {
   `;
 }
 updateLines();
-
 lineLengthInput.oninput = updateLines;
-circleSizeInput.oninput = () => previewCircle.setAttribute("r", circleSizeInput.value);
 
+circleSizeInput.oninput = () => {
+  previewCircle.setAttribute("r", circleSizeInput.value);
+};
+
+// preview animation
 function animatePreview() {
   if (modeInput.value === "rgb") {
     hue = (hue + speedInput.value * 0.5) % 360;
@@ -263,12 +283,8 @@ function animatePreview() {
   requestAnimationFrame(animatePreview);
 }
 animatePreview();
-const previewSVG = document.getElementById("previewSVG");
-sizeInput.oninput = e => {
-  previewSVG.style.width = e.target.value + "px";
-  previewSVG.style.height = e.target.value + "px";
-};
 
+// generator (FULL)
 function generate() {
   const size = sizeInput.value;
   const circleSize = circleSizeInput.value;
@@ -278,11 +294,10 @@ function generate() {
   const len = lineLengthInput.value;
   const mode = modeInput.value;
   const staticColor = staticColorInput.value;
-
   output.value = `// ==UserScript==
 // @name         RGB Crosshair by RAPXTOR
 // @namespace    http://tampermonkey.net/
-// @version      6.7
+// @version      3
 // @description  Custom crosshair (RGB + Static)
 // @match        *://survev.io/*
 // @match        *://resurviv.biz/*
@@ -377,6 +392,9 @@ l.style.filter=\`drop-shadow(0 0 ${glow}px \${col})\`;
 `}
 
 })();
+lineWidthInput.oninput = e => {
+  previewLines.setAttribute("stroke-width", e.target.value);
+};
 `;
 }
 function copyCode(){
